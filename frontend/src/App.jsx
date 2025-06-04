@@ -1,35 +1,74 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [prompt, setPrompt] = useState("");
+  const [aiResponse, setAiResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setAiResponse("");
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/ai/?prompt=${encodeURIComponent(prompt)}`);
+      const data = await res.json();
+
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setAiResponse(data.ai_response);
+      }
+    } catch (err) {
+      setError("Network error: failed to reach the AI endpoint.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div style={{ fontFamily: "Arial, sans-serif", maxWidth: "600px", margin: "50px auto" }}>
+      <h1>Shine Net AI Chat</h1>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+        <label style={{ display: "block", marginBottom: "8px" }}>
+          Enter prompt:
+        </label>
+        <input
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+          required
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            marginTop: "10px",
+            padding: "10px 20px",
+            fontSize: "16px",
+            cursor: loading ? "not-allowed" : "pointer"
+          }}
+        >
+          {loading ? "Loading..." : "Send to AI"}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </form>
+
+      {error && (
+        <div style={{ color: "red", marginBottom: "20px" }}>
+          Error: {error}
+        </div>
+      )}
+
+      {aiResponse && (
+        <div style={{ whiteSpace: "pre-wrap", background: "#f5f5f5", padding: "15px", borderRadius: "5px" }}>
+          {aiResponse}
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
