@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)xfbw=!3i5vu4f&s=bk$z0@12try=h^egg^^3m3f#*kwfq0i->
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["10.0.2.15", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -79,11 +79,16 @@ WSGI_APPLICATION = "shinynet_backend.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'shinynetdb',
+        'USER': 'shinynetuser',
+        'PASSWORD': 'your_secure_password',  # replace with your actual password
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
