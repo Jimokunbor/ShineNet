@@ -1,54 +1,102 @@
-import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+<select
+  id="categorySelect"
+  className="form-select"
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+>
+  <option value="sport">Sport</option>
+  <option value="comedy">Comedy</option>
+  <option value="politics">Politics</option>
+  <option value="business">Business</option>
+  <option value="entertainment">Entertainment</option>
+  <option value="technology">Technology</option>
+  <option value="health">Health</option>
+  <option value="science">Science</option>
+  <option value="world">World</option>
+  <option value="local">Local</option>
+  <option value="weather">Weather</option>
+  <option value="crime">Crime</option>
+  <option value="education">Education</option>
+  <option value="environment">Environment</option>
+  <option value="lifestyle">Lifestyle</option>
+  <option value="opinion">Opinion</option>
+  <option value="travel">Travel</option>
+  <option value="culture">Culture</option>
+  <option value="religion">Religion</option>
+  <option value="fashion">Fashion</option>
+  <option value="food">Food</option>
+  <option value="finance">Finance</option>
+  <option value="realestate">Real Estate</option>
+  <option value="automotive">Automotive</option>
+  <option value="media">Media</option>
+  <option value="law">Law</option>
+  <option value="military">Military</option>
+  <option value="agriculture">Agriculture</option>
+  <option value="art">Art</option>
+  <option value="history">History</option>
+  <option value="obituaries">Obituaries</option>
+  <option value="socialissues">Social Issues</option>
+  <option value="immigration">Immigration</option>
+  <option value="labor">Labor</option>
+  <option value="consumeraffairs">Consumer Affairs</option>
+  <option value="economy">Economy</option>
+  <option value="elections">Elections</option>
+  <option value="publicsafety">Public Safety</option>
+  <option value="courts">Courts</option>
+  <option value="police">Police</option>
+  <option value="mentalhealth">Mental Health</option>
+  <option value="parenting">Parenting</option>
+  <option value="relationships">Relationships</option>
+  <option value="celebrities">Celebrities</option>
+  <option value="gaming">Gaming</option>
+  <option value="music">Music</option>
+  <option value="movies">Movies</option>
+  <option value="tv">TV</option>
+  <option value="startups">Startups</option>
+  <option value="cybersecurity">Cybersecurity</option>
+  <option value="space">Space</option>
+  <option value="innovation">Innovation</option>
+  <option value="climate">Climate</option>
+  <option value="energy">Energy</option>
+  <option value="technologypolicy">Technology Policy</option>
+  <option value="journalism">Journalism</option>
+  <option value="publishing">Publishing</option>
+  <option value="ethics">Ethics</option>
+  <option value="nonprofits">Nonprofits</option>
+  <option value="lgbtq">LGBTQ+</option>
+  <option value="raceethnicity">Race & Ethnicity</option>
+  <option value="genderissues">Gender Issues</option>
+  <option value="aging">Aging</option>
+  <option value="disabilities">Disabilities</option>
+  <option value="housing">Housing</option>
+  <option value="transportation">Transportation</option>
+  <option value="infrastructure">Infrastructure</option>
+  <option value="foreignpolicy">Foreign Policy</option>
+  <option value="warconflict">War & Conflict</option>
+  <option value="diplomacy">Diplomacy</option>
+  <option value="humanrights">Human Rights</option>
+  <option value="sciencepolicy">Science Policy</option>
+  <option value="airobotics">AI & Robotics</option>
+  <option value="dataanalytics">Data & Analytics</option>
+  <option value="publichealth">Public Health</option>
+  <option value="drugspharmaceuticals">Drugs & Pharmaceuticals</option>
+  <option value="naturaldisasters">Natural Disasters</option>
+  <option value="accidents">Accidents</option>
+  <option value="philanthropy">Philanthropy</option>
+  <option value="demographics">Demographics</option>
+  <option value="urbanaffairs">Urban Affairs</option>
+  <option value="ruralaffairs">Rural Affairs</option>
+  <option value="consumertech">Consumer Tech</option>
+  <option value="educationpolicy">Education Policy</option>
+  <option value="spaceastronomy">Space & Astronomy</option>
+  <option value="peacekeeping">Peacekeeping</option>
+  <option value="civilrights">Civil Rights</option>
+  <option value="freedomspeech">Freedom of Speech</option>
+  <option value="censorship">Censorship</option>
+  <option value="pressfreedom">Press Freedom</option>
+  <option value="satire">Satire</option>
+  <option value="cartoons">Cartoons</option>
+  <option value="columns">Columns</option>
+  <option value="editorials">Editorials</option>
+</select>
 
-function App() {
-  const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('http://localhost:8000/api/news/?category=general') // update this URL as per your backend route
-      .then(res => res.json())
-      .then(data => {
-        setNews(data.articles || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  return (
-    <div className="container py-5" style={{ backgroundColor: '#fff8dc', minHeight: '100vh' }}>
-      <header className="mb-5 text-center">
-        <h1 className="display-4 text-primary">ShineNet News & Updates</h1>
-        <p className="lead text-secondary">Your personalized AI-powered news digest</p>
-      </header>
-
-      <main>
-        <section className="mb-4">
-          <h2 className="text-danger">Latest Headlines</h2>
-          {loading ? (
-            <p>Loading news...</p>
-          ) : (
-            news.length > 0 ? (
-              <div className="list-group">
-                {news.map((article, index) => (
-                  <a key={index} href={article.url} target="_blank" rel="noopener noreferrer" className="list-group-item list-group-item-action">
-                    <h5>{article.title}</h5>
-                    <p>{article.description}</p>
-                  </a>
-                ))}
-              </div>
-            ) : (
-              <p className="text-warning fs-5">No news available at the moment.</p>
-            )
-          )}
-        </section>
-      </main>
-
-      <footer className="text-center mt-auto py-3 border-top" style={{ borderColor: '#ffcc00' }}>
-        <small className="text-muted">© 2025 ShineNet. All rights reserved.</small>
-      </footer>
-    </div>
-  );
-}
-
-export default App;
