@@ -31,8 +31,8 @@ class ShineNetAIChat extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Colors.deepPurpleAccent,
-            onPrimary: Colors.white,
+            backgroundColor: Colors.deepPurpleAccent,
+            foregroundColor: Colors.white,
             textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
@@ -70,7 +70,9 @@ class _AIChatPageState extends State<AIChatPage> {
     });
 
     try {
-      final uri = Uri.parse('http://10.0.2.15:8000/api/ai/?prompt=${Uri.encodeComponent(prompt)}');
+      final uri = Uri.parse(
+        'http://10.0.2.15:8000/api/ai/?prompt=${Uri.encodeComponent(prompt)}',
+      );
       final res = await http.get(uri);
       final data = json.decode(res.body);
 
@@ -97,85 +99,105 @@ class _AIChatPageState extends State<AIChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Gradient background
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.deepPurple, Colors.indigo, Colors.blueAccent],
-          ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 60),
-                  const Text(
-                    'Shine Net AI Chat',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  TextField(
-                    controller: _controller,
-                    style: const TextStyle(fontSize: 18, color: Colors.black87),
-                    decoration: const InputDecoration(
-                      labelText: 'Enter your prompt',
-                      labelStyle: TextStyle(color: Colors.deepPurple),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _loading ? null : _sendPrompt,
-                    child: Text(_loading ? 'Loading...' : 'Send to AI'),
-                  ),
-                  const SizedBox(height: 30),
-                  if (_error.isNotEmpty)
-                    Container(
-                      padding: const EdgeInsets.all(12.0),
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        _error,
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  if (_response.isNotEmpty)
-                    Container(
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.85),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        _response,
-                        style: const TextStyle(fontSize: 18, color: Colors.black87),
-                      ),
-                    ),
-                  const SizedBox(height: 60),
-                ],
+      // Use a Stack to layer the gradient, logo, and content
+      body: Stack(
+        children: [
+          // 1. Gradient background
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.deepPurple, Colors.indigo, Colors.blueAccent],
               ),
             ),
           ),
-        ),
+
+          // 2. Positioned logo at top center
+          Positioned(
+            top: 40,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: Image.asset('assets/logo.jpeg'),
+              ),
+            ),
+          ),
+
+          // 3. Main chat UI below the logo
+          Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24.0, 160.0, 24.0, 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'Shine Net AI Chat',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    TextField(
+                      controller: _controller,
+                      style: const TextStyle(fontSize: 18, color: Colors.black87),
+                      decoration: const InputDecoration(
+                        labelText: 'Enter your prompt',
+                        labelStyle: TextStyle(color: Colors.deepPurple),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _loading ? null : _sendPrompt,
+                      child: Text(_loading ? 'Loading...' : 'Send to AI'),
+                    ),
+                    const SizedBox(height: 30),
+                    if (_error.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _error,
+                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    if (_response.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.85),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          _response,
+                          style: const TextStyle(fontSize: 18, color: Colors.black87),
+                        ),
+                      ),
+                    const SizedBox(height: 60),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
