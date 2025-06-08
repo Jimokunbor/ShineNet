@@ -99,4 +99,3 @@
   <option value="columns">Columns</option>
   <option value="editorials">Editorials</option>
 </select>
-
