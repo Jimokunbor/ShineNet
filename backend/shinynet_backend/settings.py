@@ -27,21 +27,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["10.0.2.15", "127.0.0.1", "localhost"]
 
-
 # Application definition
 INSTALLED_APPS = [
-    "corsheaders",                      # ← Must be first for CORS
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "core",
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",          # ← Must come before CommonMiddleware
+    "corsheaders.middleware.CorsMiddleware",          # Must come before CommonMiddleware
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -83,12 +83,28 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'shinynetdb',
         'USER': 'shinynetuser',
-        'PASSWORD': 'your_secure_password',  # replace with your actual password
+        'PASSWORD': 'password',  # your database password
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
+# Redis cache configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# Celery configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 
 # Password validation
@@ -109,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -118,7 +133,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 
 USE_I18N = True
-
 USE_TZ = True
 
 
