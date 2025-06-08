@@ -1,101 +1,117 @@
-<select
-  id="categorySelect"
-  className="form-select"
-  value={category}
-  onChange={(e) => setCategory(e.target.value)}
->
-  <option value="sport">Sport</option>
-  <option value="comedy">Comedy</option>
-  <option value="politics">Politics</option>
-  <option value="business">Business</option>
-  <option value="entertainment">Entertainment</option>
-  <option value="technology">Technology</option>
-  <option value="health">Health</option>
-  <option value="science">Science</option>
-  <option value="world">World</option>
-  <option value="local">Local</option>
-  <option value="weather">Weather</option>
-  <option value="crime">Crime</option>
-  <option value="education">Education</option>
-  <option value="environment">Environment</option>
-  <option value="lifestyle">Lifestyle</option>
-  <option value="opinion">Opinion</option>
-  <option value="travel">Travel</option>
-  <option value="culture">Culture</option>
-  <option value="religion">Religion</option>
-  <option value="fashion">Fashion</option>
-  <option value="food">Food</option>
-  <option value="finance">Finance</option>
-  <option value="realestate">Real Estate</option>
-  <option value="automotive">Automotive</option>
-  <option value="media">Media</option>
-  <option value="law">Law</option>
-  <option value="military">Military</option>
-  <option value="agriculture">Agriculture</option>
-  <option value="art">Art</option>
-  <option value="history">History</option>
-  <option value="obituaries">Obituaries</option>
-  <option value="socialissues">Social Issues</option>
-  <option value="immigration">Immigration</option>
-  <option value="labor">Labor</option>
-  <option value="consumeraffairs">Consumer Affairs</option>
-  <option value="economy">Economy</option>
-  <option value="elections">Elections</option>
-  <option value="publicsafety">Public Safety</option>
-  <option value="courts">Courts</option>
-  <option value="police">Police</option>
-  <option value="mentalhealth">Mental Health</option>
-  <option value="parenting">Parenting</option>
-  <option value="relationships">Relationships</option>
-  <option value="celebrities">Celebrities</option>
-  <option value="gaming">Gaming</option>
-  <option value="music">Music</option>
-  <option value="movies">Movies</option>
-  <option value="tv">TV</option>
-  <option value="startups">Startups</option>
-  <option value="cybersecurity">Cybersecurity</option>
-  <option value="space">Space</option>
-  <option value="innovation">Innovation</option>
-  <option value="climate">Climate</option>
-  <option value="energy">Energy</option>
-  <option value="technologypolicy">Technology Policy</option>
-  <option value="journalism">Journalism</option>
-  <option value="publishing">Publishing</option>
-  <option value="ethics">Ethics</option>
-  <option value="nonprofits">Nonprofits</option>
-  <option value="lgbtq">LGBTQ+</option>
-  <option value="raceethnicity">Race & Ethnicity</option>
-  <option value="genderissues">Gender Issues</option>
-  <option value="aging">Aging</option>
-  <option value="disabilities">Disabilities</option>
-  <option value="housing">Housing</option>
-  <option value="transportation">Transportation</option>
-  <option value="infrastructure">Infrastructure</option>
-  <option value="foreignpolicy">Foreign Policy</option>
-  <option value="warconflict">War & Conflict</option>
-  <option value="diplomacy">Diplomacy</option>
-  <option value="humanrights">Human Rights</option>
-  <option value="sciencepolicy">Science Policy</option>
-  <option value="airobotics">AI & Robotics</option>
-  <option value="dataanalytics">Data & Analytics</option>
-  <option value="publichealth">Public Health</option>
-  <option value="drugspharmaceuticals">Drugs & Pharmaceuticals</option>
-  <option value="naturaldisasters">Natural Disasters</option>
-  <option value="accidents">Accidents</option>
-  <option value="philanthropy">Philanthropy</option>
-  <option value="demographics">Demographics</option>
-  <option value="urbanaffairs">Urban Affairs</option>
-  <option value="ruralaffairs">Rural Affairs</option>
-  <option value="consumertech">Consumer Tech</option>
-  <option value="educationpolicy">Education Policy</option>
-  <option value="spaceastronomy">Space & Astronomy</option>
-  <option value="peacekeeping">Peacekeeping</option>
-  <option value="civilrights">Civil Rights</option>
-  <option value="freedomspeech">Freedom of Speech</option>
-  <option value="censorship">Censorship</option>
-  <option value="pressfreedom">Press Freedom</option>
-  <option value="satire">Satire</option>
-  <option value="cartoons">Cartoons</option>
-  <option value="columns">Columns</option>
-  <option value="editorials">Editorials</option>
-</select>
+import React, { useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+function App() {
+  const [news, setNews] = useState([]);
+  const [category, setCategory] = useState('general');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch news from backend API when component mounts or category changes
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/news/?category=${category}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch news');
+        return res.json();
+      })
+      .then((data) => {
+        setNews(data.articles || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [category]);
+
+  return (
+    <div className="container my-5" style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
+      <header className="mb-4 text-center">
+        <h1 className="display-4 text-primary fw-bold">ShineNet News & Updates</h1>
+        <p className="lead text-secondary">Your personalized AI-powered news digest</p>
+      </header>
+
+      <div className="mb-4">
+        <label htmlFor="categorySelect" className="form-label fw-semibold" style={{ fontSize: '1.1rem' }}>
+          Select News Category
+        </label>
+        <select
+          id="categorySelect"
+          className="form-select"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="sport">Sport</option>
+          <option value="comedy">Comedy</option>
+          <option value="politics">Politics</option>
+          <option value="business">Business</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="technology">Technology</option>
+          <option value="health">Health</option>
+          <option value="science">Science</option>
+          <option value="world">World</option>
+          <option value="local">Local</option>
+          <option value="weather">Weather</option>
+          <option value="crime">Crime</option>
+          <option value="education">Education</option>
+          <option value="environment">Environment</option>
+          <option value="lifestyle">Lifestyle</option>
+          <option value="opinion">Opinion</option>
+          <option value="travel">Travel</option>
+          <option value="culture">Culture</option>
+          <option value="editorials">Editorials</option>
+          {/* Add other categories as needed */}
+        </select>
+      </div>
+
+      {loading && (
+        <div className="text-center my-5">
+          <div className="spinner-border text-primary" role="status" aria-hidden="true"></div>
+          <span className="ms-2">Loading news...</span>
+        </div>
+      )}
+
+      {error && <p className="text-danger text-center fw-semibold">{error}</p>}
+
+      {!loading && news.length === 0 && !error && (
+        <p className="text-center text-muted fs-5">No news available at the moment.</p>
+      )}
+
+      <div className="row g-4">
+        {news.map((article, index) => (
+          <div className="col-md-4" key={index}>
+            <div className="card h-100 shadow-sm">
+              {article.urlToImage && (
+                <img
+                  src={article.urlToImage}
+                  className="card-img-top"
+                  alt={article.title}
+                  style={{ objectFit: 'cover', height: '180px' }}
+                />
+              )}
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title fw-bold" style={{ minHeight: '3rem' }}>{article.title}</h5>
+                <p className="card-text flex-grow-1">{article.description}</p>
+                <a href={article.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-auto">
+                  Read More
+                </a>
+              </div>
+              <div className="card-footer text-muted fst-italic" style={{ fontSize: '0.8rem' }}>
+                {new Date(article.publishedAt).toLocaleString()}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <footer className="text-center mt-5 mb-3 text-muted">
+        &copy; 2025 ShineNet. All rights reserved.
+      </footer>
+    </div>
+  );
+}
+
+export default App;
